@@ -21,11 +21,11 @@ public class DownloadObject {
 
 	public static void main(String[] args) throws IOException{
 		
-		String keyName = "Versioning Test";
+		String keyName = "*** ENTER THE OBJECTS KEY HERE ***";
 		// Specify the destination of the download
 		String downloadDestination = Constants.filePath;
 		// Specify the data type of the object (like .txt, .png etc...)
-		String objectType = ".txt";
+		String objectType = "*** ENTER THE OBJECTS DATA TYPE HERE ***";
 		
 		//This part gets your AWS credentials from the default location
 		AWSCredentials credentials = null;
