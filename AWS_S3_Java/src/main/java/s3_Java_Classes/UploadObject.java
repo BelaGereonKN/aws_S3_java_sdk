@@ -21,8 +21,9 @@ public class UploadObject {
 	    public static void main(String[] args) throws IOException, AmazonClientException, InterruptedException {
 	        
 	        String bucketName = Constants.bucketName;
-	        String keyName = "Upload with new path test";
-	        String objectName = "Dokument Beispiel.txt";
+	        String keyName = "*** ENTER OBJECT KEY HERE ***";
+		// objectName must be identical to the objects name on your computer 
+	        String objectName = "*** ENTER THE OBJECTS NAME HERE ***";
 	        
 	        String filePath = Constants.filePath + "\\" + objectName;
 
