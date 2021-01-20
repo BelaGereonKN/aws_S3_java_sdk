@@ -1,0 +1,99 @@
+package s3_Java_Classes;
+
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SDKGlobalConfiguration;
+import com.amazonaws.SdkClientException;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+public class DownloadObject {
+
+	public static void main(String[] args) throws IOException{
+		
+		String keyName = "Versioning Test";
+		// Specify the destination of the download
+		String downloadDestination = Constants.filePath;
+		// Specify the data type of the object (like .txt, .png etc...)
+		String objectType = ".txt";
+		
+		//This part gets your AWS credentials from the default location
+		AWSCredentials credentials = null;
+		try {
+			credentials = new ProfileCredentialsProvider("default").getCredentials();
+		} catch (Exception e) {
+			throw new AmazonClientException(
+	                   "Cannot load the credentials from the credential profiles file. " +
+	                   "Please make sure that your credentials file is at the correct " +
+	                   "location and is in valid format.",
+	                   e);
+		}
+			
+		/*
+			 * Disables SSL Certificate Check
+			 * WARNING: Not recommended for production, don't use if possible
+			 */
+			System.setProperty(SDKGlobalConfiguration.DISABLE_CERT_CHECKING_SYSTEM_PROPERTY, "True");
+				
+		try {
+			// This code expects that you have AWS credentials set up per:
+			// https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/setup-credentials.html
+			AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
+					.withCredentials(new AWSStaticCredentialsProvider(credentials))
+					.withEndpointConfiguration(new AmazonS3ClientBuilder.EndpointConfiguration(
+							Constants.endpoint,
+							Constants.region)) // Sets up a custom endpoint, delete if not needed
+					.build();
+		
+
+				
+			System.out.format("Downloading %s from S3 bucket %s...\n", keyName, Constants.bucketName);		
+			
+			S3Object object = s3Client.getObject(Constants.bucketName, keyName);
+			S3ObjectInputStream s3is = object.getObjectContent();
+			FileOutputStream fos = new FileOutputStream(new File (downloadDestination 
+					+ "\\" + keyName 
+					+ objectType
+					));
+			
+			byte[] read_buf = new byte[1024];
+			int read_len = 0;
+			while ((read_len = s3is.read(read_buf)) > 0) {
+				fos.write(read_buf, 0, read_len);
+			
+			}
+			System.out.println("Closing S3 input stream...");
+			s3is.close();
+			System.out.println("Closing file output stream...");
+			fos.close();
+	
+			System.out.println("Object downloaded successfully.");
+		} catch (AmazonServiceException e) {
+            // The call was transmitted successfully, but Amazon S3 couldn't process 
+			// it, so it returned an error response.
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            // Amazon S3 couldn't be contacted for a response, or the client
+            // couldn't parse the response from Amazon S3.
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+            System.exit(1);
+        }
+	}
+}
+	
+
