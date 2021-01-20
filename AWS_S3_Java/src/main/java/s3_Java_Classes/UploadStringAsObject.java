@@ -18,8 +18,8 @@ public class UploadStringAsObject {
 	public static void main(String[] args) throws IOException {
 		
 		String bucketName = Constants.bucketName;
-		String keyName = "Dokument Beispiel";
-		String uploadString = "This was Uploaded by Bela Géréon";
+		String keyName = "*** ENTER THE OBJECT KEY HERE ***";
+		String uploadString = "*** ENTER STRING YOU WANT TO UPLOAD HERE ***";
 		
 		/*
 		 * Disables SSL Certificate Check
