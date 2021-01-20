@@ -24,11 +24,11 @@ public class DeleteObjects {
 		
 		String bucketName = Constants.bucketName;
 		// Specify the object that you want to delete here
-		String keyName = "Test Object"; // if you only want to delete one file, use this variable
+		String keyName = "*** ENTER OBJECT KEY HERE ***"; // if you only want to delete one file, use this variable
 		
-		String keyName1 = "Testfile1.txt";
-		String keyName2 = "erster test";
-		String keyName3 = "zweiter test";
+		String keyName1 = "*** ENTER OBJECT KEY HERE ***";
+		String keyName2 = "*** ENTER OBJECT KEY HERE ***";
+		String keyName3 = "*** ENTER OBJECT KEY HERE ***";
 		// etc...
 		
 		
